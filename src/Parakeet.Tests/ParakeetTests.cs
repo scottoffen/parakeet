@@ -52,6 +52,19 @@ namespace Parakeet.Tests
             // Anything not eligble should be ignored unless it has the Parakeet attribute
             result.ParameterNames.Where(x => x == "NotEligible").Any().ShouldBeFalse();
         }
+
+        [Fact]
+        public void default_attribute_values()
+        {
+            var attr = new ParakeetAttribute("MyName");
+
+            attr.Name.ShouldBe("MyName");
+            attr.Direction.ShouldBe(ParameterDirection.Input);
+            attr.DbType.ShouldBeNull();
+            attr.Size.ShouldBeNull();
+            attr.Precision.ShouldBeNull();
+            attr.Scale.ShouldBeNull();
+        }
     }
 
     public class TestClass

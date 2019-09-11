@@ -23,7 +23,7 @@ namespace Parakeet
             foreach (var property in properties)
             {
                 var attr = property.GetCustomAttributes<ParakeetAttribute>().FirstOrDefault();
-                if (attr == null) attr = new ParakeetAttribute(property.Name);
+                if (attr == null) attr = new ParakeetAttribute { Name = property.Name };
                 if (string.IsNullOrEmpty(attr.Name)) attr.Name = property.Name;
 
                 var func = Parakeet.GenerateDelegate<T>(property.GetGetMethod());
