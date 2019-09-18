@@ -44,7 +44,8 @@ namespace Parakeet
 
                 if (value is DataTable dataTablePropertyValue)
                 {
-                    parameters.Add(name, dataTablePropertyValue.AsTableValuedParameter(), attr.DbType, attr.Direction, attr.Size, attr.Precision, attr.Scale);
+                    var tableName = !string.IsNullOrEmpty(attr.TableName) ? attr.TableName : dataTablePropertyValue.TableName;
+                    parameters.Add(name, dataTablePropertyValue.AsTableValuedParameter(tableName), attr.DbType, attr.Direction, attr.Size, attr.Precision, attr.Scale);
                 }
                 else
                 {

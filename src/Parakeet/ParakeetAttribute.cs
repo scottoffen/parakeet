@@ -19,6 +19,8 @@ namespace Parakeet
 
         public byte? Scale { get; set; } = null;
 
+        public string TableName { get; set; }
+
         public ParakeetAttribute() { }
 
         public ParakeetAttribute(string name)
