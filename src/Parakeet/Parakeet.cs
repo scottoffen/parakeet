@@ -35,7 +35,7 @@ namespace Parakeet
 
         public static DynamicParameters Generate(T obj, bool removeUnused = false)
         {
-            var parameters = new DynamicParameters(obj);
+            var parameters = new DynamicParameters();
 
             foreach (var name in PropertyGetterCache.Keys)
             {
