@@ -61,8 +61,23 @@ namespace Parakeet.Tests
             var attr = new ParakeetAttribute("MyName");
 
             attr.Name.ShouldBe("MyName");
+            attr.TableName.ShouldBeNull();
             attr.Direction.ShouldBe(ParameterDirection.Input);
             attr.DbType.ShouldBeNull();
+            attr.Size.ShouldBeNull();
+            attr.Precision.ShouldBeNull();
+            attr.Scale.ShouldBeNull();
+        }
+
+        [Fact]
+        public void optional_named_parameters()
+        {
+            var attr = new ParakeetAttribute(propertyName: "MyName", tableName: "dbo.MyTable", dbType: DbType.Binary);
+
+            attr.Name.ShouldBe("MyName");
+            attr.TableName.ShouldBe("dbo.MyTable");
+            attr.Direction.ShouldBe(ParameterDirection.Input);
+            attr.DbType.ShouldBe(DbType.Binary);
             attr.Size.ShouldBeNull();
             attr.Precision.ShouldBeNull();
             attr.Scale.ShouldBeNull();
@@ -122,7 +137,7 @@ namespace Parakeet.Tests
         [ParakeetIgnore]
         public string Ignored { get; set; }
 
-        [Parakeet("NewName")]
+        [Parakeet(propertyName: "NewName")]
         public string OldName { get; set; }
 
         public NotEligible NotEligibleValue { get; set; } = new NotEligible();

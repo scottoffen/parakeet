@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Runtime.InteropServices;
 
 namespace Parakeet
 {
@@ -26,97 +27,27 @@ namespace Parakeet
 
         public ParakeetAttribute() { }
 
-        public ParakeetAttribute(string name)
+        public ParakeetAttribute(string propertyName = null, ParameterDirection direction = ParameterDirection.Input, string tableName = null, int size = -1, byte precision = 0, byte scale = 0)
         {
-            Name = name;
-        }
-
-        public ParakeetAttribute(ParameterDirection direction)
-        {
+            Name = propertyName;
             Direction = direction;
+            TableName = tableName;
+
+            if (size > 0) Size = size;
+            if (precision > 0) Precision = precision;
+            if (scale > 0) Scale = scale;
         }
 
-        public ParakeetAttribute(DbType dbType)
+        public ParakeetAttribute(DbType dbType, string propertyName = null, ParameterDirection direction = ParameterDirection.Input, string tableName = null, int size = -1, byte precision = 0, byte scale = 0)
         {
-            DbType = dbType;
-        }
-
-        public ParakeetAttribute(string name, ParameterDirection direction)
-        {
-            Name = name;
-            Direction = direction;
-        }
-
-        public ParakeetAttribute(string name, DbType dbType)
-        {
-            Name = name;
-            DbType = dbType;
-        }
-
-        public ParakeetAttribute(ParameterDirection direction, DbType dbType)
-        {
+            Name = propertyName;
             Direction = direction;
             DbType = dbType;
-        }
+            TableName = tableName;
 
-        public ParakeetAttribute(string name, ParameterDirection direction, DbType dbType)
-        {
-            Name = name;
-            Direction = direction;
-            DbType = dbType;
-        }
-
-        public ParakeetAttribute(string name, ParameterDirection direction, DbType dbType, int size)
-        {
-            Name = name;
-            Direction = direction;
-            DbType = dbType;
-            Size = size;
-        }
-
-        public ParakeetAttribute(string name, ParameterDirection direction, DbType dbType, int size, byte precision)
-        {
-            Name = name;
-            Direction = direction;
-            DbType = dbType;
-            Size = size;
-            Precision = precision;
-        }
-
-        public ParakeetAttribute(string name, ParameterDirection direction, DbType dbType, int size, byte precision, byte scale)
-        {
-            Name = name;
-            Direction = direction;
-            DbType = dbType;
-            Size = size;
-            Precision = precision;
-            Scale = scale;
-        }
-
-        public ParakeetAttribute(DbType dbType, int size, byte precision, byte scale)
-        {
-            DbType = dbType;
-            Size = size;
-            Precision = precision;
-            Scale = scale;
-        }
-
-        public ParakeetAttribute(string name, DbType dbType, int size, byte precision, byte scale)
-        {
-            Name = name;
-            DbType = dbType;
-            Size = size;
-            Precision = precision;
-            Scale = scale;
-        }
-
-        public ParakeetAttribute(ParameterDirection direction, DbType dbType, int size, byte precision, byte scale)
-        {
-            Direction = direction;
-            DbType = dbType;
-            Size = size;
-            Precision = precision;
-            Scale = scale;
+            if (size > 0) Size = size;
+            if (precision > 0) Precision = precision;
+            if (scale > 0) Scale = scale;
         }
     }
 }
