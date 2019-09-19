@@ -3,6 +3,7 @@ using System.Data;
 using Shouldly;
 using Xunit;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Parakeet.Tests
 {
@@ -15,7 +16,7 @@ namespace Parakeet.Tests
         {
             var result = Parakeet<TestClass>.Generate(_testClass);
 
-            result.ParameterNames.Count().ShouldBe(24);
+            result.ParameterNames.Count().ShouldBe(25);
 
             result.Get<string>("StringValue").ShouldBe(_testClass.StringValue);
             // result.Get<string?>("NullableStringValue").ShouldBe(_testClass.NullableStringValue);
@@ -45,6 +46,7 @@ namespace Parakeet.Tests
             // Since the TableValueParamter type is internal to Dapper, we can't use Get<T>
             // to inspect the value. We'll have to be satisfied for checking for it's existence.
             result.ParameterNames.Where(x => x == "DataTableValue").Any().ShouldBeTrue();
+            result.ParameterNames.Where(x => x == "EnumerableDataRecords").Any().ShouldBeTrue();
 
             // Anything marked as ParakeetIgnore, even if it's eligible, should be ignored.
             result.ParameterNames.Where(x => x == "Ignored").Any().ShouldBeFalse();
@@ -114,6 +116,8 @@ namespace Parakeet.Tests
         public DateTime? NullableDateTimeValue { get; set; } = null;
 
         public DataTable DataTableValue { get; set; } = new DataTable();
+
+        public IEnumerable<IDataRecord> EnumerableDataRecords { get; set; } = new List<IDataRecord>();
 
         [ParakeetIgnore]
         public string Ignored { get; set; }

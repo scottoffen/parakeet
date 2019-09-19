@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Runtime.InteropServices;
 
 namespace Parakeet
 {
@@ -20,6 +19,10 @@ namespace Parakeet
         public byte? Scale { get; set; } = null;
 
         public string TableName { get; set; }
+
+        internal bool IsEnumerableDataRecord { get; set; } = false;
+
+        internal bool IsDataTable { get; set; } = false;
 
         public ParakeetAttribute() { }
 

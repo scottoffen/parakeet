@@ -1,6 +1,7 @@
 using Dapper;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
@@ -26,6 +27,9 @@ namespace Parakeet
                 if (attr == null) attr = new ParakeetAttribute { Name = property.Name };
                 if (string.IsNullOrEmpty(attr.Name)) attr.Name = property.Name;
 
+                attr.IsDataTable = property.PropertyType == typeof(DataTable);
+                attr.IsEnumerableDataRecord = typeof(IEnumerable<IDataRecord>).IsAssignableFrom(property.PropertyType);
+
                 var func = Parakeet.GenerateDelegate<T>(property.GetGetMethod());
 
                 AttributeCache.AddOrUpdate(attr.Name, attr, (t, p) => attr);
@@ -42,10 +46,17 @@ namespace Parakeet
                 var value = PropertyGetterCache[name](obj);
                 var attr = AttributeCache[name];
 
-                if (value is DataTable dataTablePropertyValue)
+                if (attr.IsDataTable || attr.IsEnumerableDataRecord)
                 {
-                    var tableName = !string.IsNullOrEmpty(attr.TableName) ? attr.TableName : dataTablePropertyValue.TableName;
-                    parameters.Add(name, dataTablePropertyValue.AsTableValuedParameter(tableName), attr.DbType, attr.Direction, attr.Size, attr.Precision, attr.Scale);
+                    if (value is DataTable dataTablePropertyValue)
+                    {
+                        var tableName = !string.IsNullOrEmpty(attr.TableName) ? attr.TableName : dataTablePropertyValue.TableName;
+                        parameters.Add(name, dataTablePropertyValue.AsTableValuedParameter(tableName), attr.DbType, attr.Direction, attr.Size, attr.Precision, attr.Scale);
+                    }
+                    if (value is IEnumerable<IDataRecord> enumerableDataRecordPropertyValue)
+                    {
+                        parameters.Add(name, enumerableDataRecordPropertyValue.AsTableValuedParameter(attr.TableName), attr.DbType, attr.Direction, attr.Size, attr.Precision, attr.Scale);
+                    }
                 }
                 else
                 {
